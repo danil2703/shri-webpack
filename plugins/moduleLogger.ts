@@ -1,20 +1,32 @@
 import { Compiler } from 'webpack';
-
+import fg from 'fast-glob';
+import fs from 'fs';
 class ModuleLogger {
+    usedFiles: Record<string, boolean> = {};
+    unusedFiles: string[] = [];
+
     apply(compiler: Compiler) {
-        compiler.hooks.normalModuleFactory.tap(
-            'ModuleLogger',
-            (normalModuleFactory) => {
-                normalModuleFactory.hooks.module.tap('ModuleLogger', (_module, _createData, resolveData) => {
-                    // @ts-ignore
-                    console.log(_createData.resource);
+        compiler.hooks.afterEmit.tap('ModuleLogger', async compilation => {
+            let context = compiler.context.replace(/\\/g, '/');
 
-                    console.log(resolveData.context);
-
-                    return _module;
+            Array.from(compilation.fileDependencies)
+                .map(item => item.replace(/\\/g, '/'))
+                .forEach((file: string) => {
+                    this.usedFiles[file] = true;
                 });
-            }
-        );
+
+            const localFiles = (await fg([compiler.context, 'src/**/*.{ts,tsx,js}'])).map(file => `${context}/${file}`);
+
+            console.log(localFiles);
+
+            localFiles.forEach(file => {
+                if (!this.usedFiles[file]) {
+                    this.unusedFiles.push(file);
+                }
+            });
+
+            fs.writeFileSync('unused', JSON.stringify(this.unusedFiles));
+        });
     }
 }
 
