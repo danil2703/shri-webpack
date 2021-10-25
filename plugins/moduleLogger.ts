@@ -13,7 +13,7 @@ class ModuleLogger {
                 dependenciSet.add(path);
             });
 
-            const entries = await fg(`${compiler.context}/src/**/*`);
+            const entries = await fg(`${compiler.context}/src/**/*`, { ignore: ['/src/index.html'] });
 
             entries.forEach(file => {
                 if (!dependenciSet.has(file)) {
