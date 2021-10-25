@@ -30,7 +30,7 @@ const config: webpack.Configuration = {
             'buffer': require.resolve('buffer'),
             'stream': false,
         },
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.tsx', '.ts', '.js', '.jsx', '...'],
         alias: {
             'crypto-browserify': false,
         },
