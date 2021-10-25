@@ -13,10 +13,10 @@ class ModuleLogger {
                 dependenciSet.add(path);
             });
 
-            const entries = await fg(`${compiler.context}/src/**/*`, { ignore: ['/src/index.html'] });
+            const localFiles = await fg(`${compiler.context}/src/**/*`);
 
-            entries.forEach(file => {
-                if (!dependenciSet.has(file)) {
+            localFiles.forEach(file => {
+                if (!dependenciSet.has(file) && file.indexOf('.html') === -1) {
                     unusedFiles.push(file);
                 }
             });
