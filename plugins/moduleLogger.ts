@@ -15,12 +15,10 @@ class ModuleLogger {
                     this.usedFiles[file] = true;
                 });
 
-            const localFiles = (await fg([compiler.context, 'src/**/*.{ts,tsx,js}'])).map(file => `${context}/${file}`);
-
-            console.log(localFiles);
+            const localFiles = (await fg([compiler.context, 'src/**/*.{ts,tsx,js}']));
 
             localFiles.forEach(file => {
-                if (!this.usedFiles[file]) {
+                if (!this.usedFiles[`${context}/${file}`]) {
                     this.unusedFiles.push(file);
                 }
             });
