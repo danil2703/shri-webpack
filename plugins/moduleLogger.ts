@@ -24,7 +24,7 @@ class ModuleLogger {
                 }
             });
 
-            fs.writeFileSync(path.resolve(__dirname, './unused'), JSON.stringify(Array.from(localFileSet)));
+            fs.writeFileSync(path.resolve(__dirname, '../unused'), JSON.stringify(Array.from(localFileSet)));
         });
     }
 }
