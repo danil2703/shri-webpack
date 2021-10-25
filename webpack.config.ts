@@ -14,6 +14,7 @@ const config: webpack.Configuration = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].[contenthash].js',
+        clean: true,
     },
     plugins: [
         new HtmlWebpackPlugin(),
@@ -26,10 +27,13 @@ const config: webpack.Configuration = {
     ],
     resolve: {
         fallback: {
-            "buffer": require.resolve("buffer"),
-            "stream": false,
+            'buffer': require.resolve('buffer'),
+            'stream': false,
         },
         extensions: ['.tsx', '.ts', '.js'],
+        alias: {
+            'crypto-browserify': false,
+        },
     },
     module: {
         rules: [
@@ -38,7 +42,7 @@ const config: webpack.Configuration = {
                 loader: 'ts-loader',
                 exclude: ['/node_modules/'],
             },
-        ]
+        ],
     },
 };
 

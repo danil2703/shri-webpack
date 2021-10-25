@@ -18,13 +18,13 @@ class ModuleLogger {
 
             compilation.modules.forEach(module => {
                 //@ts-ignore
-                let resource: string = module.resource;
+                const resource: string = module.resource;
                 if (resource) {
                     localFileSet.delete(resource);
                 }
             });
 
-            fs.writeFileSync('unused', JSON.stringify(Array.from(localFileSet)));
+            fs.writeFileSync(path.resolve(__dirname, './unused'), JSON.stringify(Array.from(localFileSet)));
         });
     }
 }
